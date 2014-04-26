@@ -1,9 +1,7 @@
 //
 //  Y6JSONFileManager.h
-//  DreamGenerator
 //
-//  Created by Eddy Claessens on 26/03/2014.
-//  Copyright (c) 2014 iPcrea. All rights reserved.
+//  Created by Ysix on 26/03/2014.
 //
 
 #import <Foundation/Foundation.h>
