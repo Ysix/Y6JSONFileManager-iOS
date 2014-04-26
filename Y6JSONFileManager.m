@@ -10,6 +10,7 @@
 
 @implementation Y6JSONFileManager
 
+@synthesize keepACopy;
 
 - (id)initForFileNamed:(NSString *)name andUseByDefault:(id)defaultObject
 {
@@ -21,32 +22,43 @@
 		filePath = [documentsDirectory stringByAppendingPathComponent:name];
 
 		BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
-
+        
 		if (!fileExists)
 		{
 			if (![self writeObject:defaultObject])
 				return nil;
 		}
+        
+        keepACopy = YES;
 	}
 	return self;
 }
 
-// read a file and get object
-
 - (id)getObject
 {
+    if (keepACopy && objectCopy)
+    {
+        return objectCopy;
+    }
+    
 	NSData *data = [NSData dataWithContentsOfFile:filePath];
 
 	id object = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
 
+// TODO: handle the errors
+    
 	return object;
 }
 
-// write an object in a file
-
 - (BOOL)writeObject:(id)object
 {
+    if (keepACopy)
+        objectCopy = object;
+    
 	NSData *data = [NSJSONSerialization dataWithJSONObject:object options:kNilOptions error:nil];
+    
+// TODO: handle the errors
+
 
 	return [data writeToFile:filePath atomically:YES];
 }
